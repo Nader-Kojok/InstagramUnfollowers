@@ -32,6 +32,8 @@ export const Searching = ({
     return null;
   }
 
+  const scanComplete = state.percentage >= 100;
+
   const usersForDisplay = getUsersForDisplay(
     state.results,
     state.whitelistedResults,
@@ -149,7 +151,7 @@ export const Searching = ({
         </div>
         {/* Scan controls */}
         <div className="controls">
-          {state.percentage < 100 && (
+          {!scanComplete && (
             <button
               className="button-control button-pause"
               onClick={pauseScan}
@@ -157,7 +159,7 @@ export const Searching = ({
               {scanningPaused ? "Resume" : "Pause"}
             </button>
           )}
-          {state.percentage >= 100 && (
+          {scanComplete && (
             <button
               className="button-control"
               onClick={onRescan}
