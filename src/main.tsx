@@ -515,6 +515,8 @@ function App() {
             headers: {
               "content-type": "application/x-www-form-urlencoded",
               "x-csrftoken": csrftoken,
+              "x-ig-app-id": "936619743392459",
+              "x-requested-with": "XMLHttpRequest",
             },
             method: "POST",
             mode: "cors",
