@@ -10,6 +10,7 @@ export interface SearchingProps {
   setState: (state: State) => void;
   scanningPaused: boolean;
   pauseScan: () => void;
+  onRescan: () => void;
   handleScanFilter: (e: React.ChangeEvent<HTMLInputElement>) => void;
   toggleUser: (checked: boolean, user: UserNode) => void;
   UserCheckIcon: React.FC;
@@ -21,6 +22,7 @@ export const Searching = ({
   setState,
   scanningPaused,
   pauseScan,
+  onRescan,
   handleScanFilter,
   toggleUser,
   UserCheckIcon,
@@ -147,12 +149,22 @@ export const Searching = ({
         </div>
         {/* Scan controls */}
         <div className="controls">
-          <button
-            className="button-control button-pause"
-            onClick={pauseScan}
-          >
-            {scanningPaused ? "Resume" : "Pause"}
-          </button>
+          {state.percentage < 100 && (
+            <button
+              className="button-control button-pause"
+              onClick={pauseScan}
+            >
+              {scanningPaused ? "Resume" : "Pause"}
+            </button>
+          )}
+          {state.percentage >= 100 && (
+            <button
+              className="button-control"
+              onClick={onRescan}
+            >
+              New Scan
+            </button>
+          )}
         </div>
         <div className="sidebar-pagination">
           <p>Pages</p>

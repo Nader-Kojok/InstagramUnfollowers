@@ -119,6 +119,7 @@ function App() {
 
   const scanningPausedRef = useRef(false);
   const unfollowCancelledRef = useRef(false);
+  const [rescanKey, setRescanKey] = useState(0);
 
   const pauseScan = () => {
     scanningPausedRef.current = !scanningPausedRef.current;
@@ -313,6 +314,31 @@ function App() {
     setState({ status: "initial" });
   };
 
+  const onRescan = () => {
+    clearScanResults();
+    unfollowCancelledRef.current = false;
+    scanningPausedRef.current = false;
+    const whitelistedResults = loadWhitelist();
+    setState({
+      status: "scanning",
+      page: 1,
+      searchTerm: "",
+      currentTab: "non_whitelisted",
+      percentage: 0,
+      results: [],
+      selectedResults: [],
+      whitelistedResults,
+      filter: {
+        showNonFollowers: true,
+        showFollowers: false,
+        showVerified: true,
+        showPrivate: true,
+        showWithOutProfilePicture: true,
+      },
+    });
+    setRescanKey(k => k + 1);
+  };
+
   const goBackToScanResults = () => {
     const cachedResults = loadScanResults();
     if (cachedResults && cachedResults.length > 0) {
@@ -445,7 +471,7 @@ function App() {
     };
     scan();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [state.status]);
+  }, [state.status, rescanKey]);
 
   useEffect(() => {
     const unfollow = async () => {
@@ -601,6 +627,7 @@ function App() {
         handleScanFilter={handleScanFilter}
         toggleUser={toggleUser}
         pauseScan={pauseScan}
+        onRescan={onRescan}
         setState={setState}
         scanningPaused={scanningPausedRef.current}
         UserCheckIcon={UserCheckIcon}
