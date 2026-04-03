@@ -1,12 +1,25 @@
 export const INSTAGRAM_HOSTNAME = "www.instagram.com";
 export const UNFOLLOWERS_PER_PAGE = 50;
 export const WHITELISTED_RESULTS_STORAGE_KEY = "iu_whitelisted-results";
+export const TIMINGS_STORAGE_KEY = "iu_timings";
+export const SCAN_RESULTS_STORAGE_KEY = "iu_scan-results";
 
 //TIMINGS CONSTANTS
 export const DEFAULT_TIME_BETWEEN_SEARCH_CYCLES = 1000;
 export const DEFAULT_TIME_TO_WAIT_AFTER_FIVE_SEARCH_CYCLES = 10000;
 export const DEFAULT_TIME_BETWEEN_UNFOLLOWS = 4000;
 export const DEFAULT_TIME_TO_WAIT_AFTER_FIVE_UNFOLLOWS = 300000;
+
+// BATCH & RATE LIMIT CONSTANTS
+export const DEFAULT_MIN_BATCH_SIZE = 3;
+export const DEFAULT_MAX_BATCH_SIZE = 7;
+export const DEFAULT_DAILY_UNFOLLOW_CAP = 150;
+export const DAILY_UNFOLLOW_COUNT_STORAGE_KEY = "iu_daily-unfollow-count";
+export const DAILY_UNFOLLOW_DATE_STORAGE_KEY = "iu_daily-unfollow-date";
+export const MAX_SCAN_RETRIES = 5;
+export const MAX_CONSECUTIVE_UNFOLLOW_FAILURES = 3;
+export const FAILURE_BACKOFF_MULTIPLIER = 2;
+export const LONG_PAUSE_ON_FAILURES_MS = 900000; // 15 minutes
 
 // FILTER CONSTANTS
 export const WITHOUT_PROFILE_PICTURE_URL_IDS = [

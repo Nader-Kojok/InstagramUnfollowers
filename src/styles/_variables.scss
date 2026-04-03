@@ -1,15 +1,21 @@
 // Colors
-$clr-red: #ac2626;
-$clr-green: #56d756;
-$clr-cyan: #00ffff;
-$clr-white: #ffffff;
-$clr-black: #111111;
-$clr-gray: #222222;
-$clr-border: #333333;
+$clr-red: #ff453a;
+$clr-green: #30d158;
+$clr-cyan: #64d2ff;
+$clr-white: #f5f5f7;
+$clr-black: #0a0a0a;
+$clr-gray: #1c1c1e;
+$clr-border: rgba(255, 255, 255, 0.08);
 
 // Background Colors
-$bg-primary: $clr-black; // Main background color
-$bg-secondary: $clr-gray; // Secondary background color
+$bg-primary: $clr-black;
+$bg-secondary: #1c1c1e;
+$bg-tertiary: #2c2c2e;
+$bg-elevated: rgba(44, 44, 46, 0.72);
+
+// Accent
+$clr-accent: #0a84ff;
+$clr-accent-hover: #0070e0;
 
 // Sizes
 $size-small: 0.5rem;
@@ -18,5 +24,12 @@ $size-large: 1.5rem;
 $size-xlarge: 2rem;
 
 // Borders
-$border-radius: 8px;
+$border-radius: 12px;
+$border-radius-sm: 8px;
+$border-radius-lg: 16px;
 $border-color: $clr-border;
+
+// Transitions
+$transition-fast: 0.15s cubic-bezier(0.25, 0.1, 0.25, 1);
+$transition-medium: 0.25s cubic-bezier(0.25, 0.1, 0.25, 1);
+$transition-bounce: 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);

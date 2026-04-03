@@ -5,13 +5,14 @@ import { State } from "../model/state";
 interface UnfollowingProps {
   state: State;
   handleUnfollowFilter: (e: React.ChangeEvent<HTMLInputElement>) => void;
-
+  cancelUnfollow: () => void;
 }
 
 export const Unfollowing = (
   {
     state,
     handleUnfollowFilter,
+    cancelUnfollow,
   }: UnfollowingProps) => {
 
   if (state.status !== "unfollowing") {
@@ -42,9 +43,26 @@ export const Unfollowing = (
             &nbsp;Failed
           </label>
         </menu>
+        {state.percentage < 100 && !state.cancelled && (
+          <div className="controls">
+            <button
+              className="button-control button-cancel"
+              onClick={cancelUnfollow}
+            >
+              Cancel
+            </button>
+          </div>
+        )}
       </aside>
       <article className="unfollow-log-container">
-        {state.unfollowLog.length === state.selectedResults.length && (
+        {state.cancelled && (
+          <>
+            <hr />
+            <div className="fs-large p-medium clr-red">Cancelled — {state.unfollowLog.length}/{state.selectedResults.length} processed</div>
+            <hr />
+          </>
+        )}
+        {!state.cancelled && state.unfollowLog.length === state.selectedResults.length && (
           <>
             <hr />
             <div className="fs-large p-medium clr-green">All DONE!</div>

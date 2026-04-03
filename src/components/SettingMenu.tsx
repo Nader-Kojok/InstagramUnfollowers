@@ -22,6 +22,9 @@ export const SettingMenu = ({
   const [timeToWaitAfterFiveSearchCycles, setTimeToWaitAfterFiveSearchCycles] = useState(currentTimings.timeToWaitAfterFiveSearchCycles);
   const [timeBetweenUnfollows, setTimeBetweenUnfollows] = useState(currentTimings.timeBetweenUnfollows);
   const [timeToWaitAfterFiveUnfollows, setTimeToWaitAfterFiveUnfollows] = useState(currentTimings.timeToWaitAfterFiveUnfollows);
+  const [minBatchSize, setMinBatchSize] = useState(currentTimings.minBatchSize);
+  const [maxBatchSize, setMaxBatchSize] = useState(currentTimings.maxBatchSize);
+  const [dailyUnfollowCap, setDailyUnfollowCap] = useState(currentTimings.dailyUnfollowCap);
 
   const handleSave = (event: any) => {
     event.preventDefault();
@@ -30,6 +33,9 @@ export const SettingMenu = ({
       timeToWaitAfterFiveSearchCycles,
       timeBetweenUnfollows,
       timeToWaitAfterFiveUnfollows,
+      minBatchSize,
+      maxBatchSize,
+      dailyUnfollowCap,
     });
     setSettingState(false);
   };
@@ -106,6 +112,45 @@ export const SettingMenu = ({
                   onChange={(e) => handleInputChange(e, setTimeToWaitAfterFiveUnfollows)}
                 />
                 <label className="margin-between-input-and-label">(ms)</label>
+              </div>
+
+              <div className="row">
+                <label className="minimun-width">Min batch size (unfollows per batch)</label>
+                <input
+                  type="number"
+                  id="minBatchSize"
+                  name="minBatchSize"
+                  min={1}
+                  max={20}
+                  value={minBatchSize}
+                  onChange={(e) => handleInputChange(e, setMinBatchSize)}
+                />
+              </div>
+
+              <div className="row">
+                <label className="minimun-width">Max batch size (unfollows per batch)</label>
+                <input
+                  type="number"
+                  id="maxBatchSize"
+                  name="maxBatchSize"
+                  min={1}
+                  max={20}
+                  value={maxBatchSize}
+                  onChange={(e) => handleInputChange(e, setMaxBatchSize)}
+                />
+              </div>
+
+              <div className="row">
+                <label className="minimun-width">Daily unfollow cap</label>
+                <input
+                  type="number"
+                  id="dailyUnfollowCap"
+                  name="dailyUnfollowCap"
+                  min={10}
+                  max={500}
+                  value={dailyUnfollowCap}
+                  onChange={(e) => handleInputChange(e, setDailyUnfollowCap)}
+                />
               </div>
 
               <div className="warning-container">

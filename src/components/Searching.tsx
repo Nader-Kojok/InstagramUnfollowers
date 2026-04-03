@@ -209,6 +209,7 @@ export const Searching = ({
                 status: "unfollowing",
                 percentage: 0,
                 unfollowLog: [],
+                cancelled: false,
                 filter: {
                   showSucceeded: true,
                   showFailed: true,
@@ -257,7 +258,7 @@ export const Searching = ({
         {getCurrentPageUnfollowers(usersForDisplay, state.page).map(user => {
           const firstLetter = user.username.substring(0, 1).toUpperCase();
           return (
-            <>
+            <React.Fragment key={user.id}>
               {firstLetter !== currentLetter && onNewLetter(firstLetter)}
               <label className="result-item">
                 <div className="flex grow align-center">
@@ -330,7 +331,7 @@ export const Searching = ({
                   onChange={(e: React.ChangeEvent<HTMLInputElement>) => toggleUser(e.currentTarget.checked, user)}
                 />
               </label>
-            </>
+            </React.Fragment>
           );
         })}
       </article>

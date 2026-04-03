@@ -1,5 +1,5 @@
 import { UserNode } from "../model/user";
-import { UNFOLLOWERS_PER_PAGE, WITHOUT_PROFILE_PICTURE_URL_IDS } from "../constants/constants";
+import { UNFOLLOWERS_PER_PAGE, WITHOUT_PROFILE_PICTURE_URL_IDS, DAILY_UNFOLLOW_COUNT_STORAGE_KEY, DAILY_UNFOLLOW_DATE_STORAGE_KEY } from "../constants/constants";
 import { ScanningTab } from "../model/scanning-tab";
 import { ScanningFilter } from "../model/scanning-filter";
 import { UnfollowLogEntry } from "../model/unfollow-log-entry";
@@ -30,12 +30,12 @@ export function exportToJSON(users: readonly UserNode[]) {
 export function exportToCSV(users: readonly UserNode[]) {
   const headers = ['id', 'username', 'full_name', 'is_verified', 'is_private', 'profile_pic_url'];
   const rows = users.map(user => [
-    user.id,
-    user.username,
+    sanitizeCsvCell(user.id),
+    sanitizeCsvCell(user.username),
     `"${user.full_name.replace(/"/g, '""')}"`,
     user.is_verified,
     user.is_private,
-    user.profile_pic_url
+    sanitizeCsvCell(user.profile_pic_url)
   ]);
   
   const csvContent = "data:text/csv;charset=utf-8," 
@@ -171,4 +171,38 @@ export function urlGenerator(nextCode?: string): string {
 
 export function unfollowUserUrlGenerator(idToUnfollow: string): string {
   return `https://www.instagram.com/web/friendships/${idToUnfollow}/unfollow/`;
+}
+
+export function sanitizeCsvCell(value: string): string {
+  if (/^[=+\-@\t\r]/.test(value)) {
+    return "'" + value;
+  }
+  return value;
+}
+
+export function humanizedSleep(baseMs: number): Promise<any> {
+  const jitter = baseMs * (0.7 + Math.random() * 1.5);
+  return sleep(Math.floor(jitter));
+}
+
+export function getRandomBatchSize(min: number, max: number): number {
+  return Math.floor(Math.random() * (max - min + 1)) + min;
+}
+
+export function getDailyUnfollowCount(): number {
+  const today = new Date().toDateString();
+  const storedDate = localStorage.getItem(DAILY_UNFOLLOW_DATE_STORAGE_KEY);
+  if (storedDate !== today) {
+    localStorage.setItem(DAILY_UNFOLLOW_DATE_STORAGE_KEY, today);
+    localStorage.setItem(DAILY_UNFOLLOW_COUNT_STORAGE_KEY, "0");
+    return 0;
+  }
+  return parseInt(localStorage.getItem(DAILY_UNFOLLOW_COUNT_STORAGE_KEY) || "0", 10);
+}
+
+export function incrementDailyUnfollowCount(): void {
+  const today = new Date().toDateString();
+  localStorage.setItem(DAILY_UNFOLLOW_DATE_STORAGE_KEY, today);
+  const current = getDailyUnfollowCount();
+  localStorage.setItem(DAILY_UNFOLLOW_COUNT_STORAGE_KEY, String(current + 1));
 }

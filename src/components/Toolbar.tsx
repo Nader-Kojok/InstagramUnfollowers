@@ -17,6 +17,7 @@ interface ToolBarProps {
   setTimings: (timings: Timings) => void;
   whitelistedUsers: readonly UserNode[];
   onWhitelistUpdate: (users: readonly UserNode[]) => void;
+  onResetToInitial: () => void;
 }
 
 export const Toolbar = ({
@@ -29,6 +30,7 @@ export const Toolbar = ({
   setTimings,
   whitelistedUsers,
   onWhitelistUpdate,
+  onResetToInitial,
 }: ToolBarProps) => {
 
   const [setingMenu, setSettingMenu] = useState(false);
@@ -59,9 +61,7 @@ export const Toolbar = ({
 
               case "scanning":
               case "unfollowing":
-                setState({
-                  status: "initial",
-                });
+                onResetToInitial();
             }
           }}
         >
@@ -120,9 +120,7 @@ export const Toolbar = ({
         >
           CSV
         </button>
-        {
-          state.status === "initial" && <SettingIcon onClickLogo={() => { setSettingMenu(true); }} />
-        }
+        <SettingIcon onClickLogo={() => { setSettingMenu(true); }} />
         <input
           type="text"
           className="search-bar"

@@ -1,3 +1,4 @@
+@use "sass:color";
 @use "variables";
 @use "helpers";
 
@@ -14,7 +15,9 @@ html {
     }
 
     .iu {
-        font-family: system-ui;
+        font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'SF Pro Text', system-ui, sans-serif;
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
         @include helpers.main-layout;
         display: flex;
         flex-direction: column;
@@ -28,9 +31,12 @@ html {
             top: 0;
             left: 0;
             right: 0;
-            height: 4rem;
-            background-color: variables.$bg-secondary;
-            z-index: 1;
+            height: 3.5rem;
+            background: variables.$bg-elevated;
+            backdrop-filter: saturate(180%) blur(20px);
+            -webkit-backdrop-filter: saturate(180%) blur(20px);
+            border-bottom: 1px solid variables.$clr-border;
+            z-index: 10;
             @extend .flex;
 
             &-content {
@@ -39,6 +45,7 @@ html {
                 @include helpers.main-layout;
                 @extend .flex;
                 @extend .align-center;
+                gap: 0.5rem;
             }
 
             .logo {
@@ -47,27 +54,50 @@ html {
                 gap: variables.$size-small;
                 align-items: center;
                 justify-content: center;
-                font-size: 1rem;
-                letter-spacing: 2px;
+                font-size: 0.9rem;
+                letter-spacing: -0.01em;
                 cursor: pointer;
+                transition: opacity variables.$transition-fast;
+                flex-shrink: 0;
+
+                &:hover {
+                    opacity: 0.7;
+                }
 
                 .logo-text {
                     display: flex;
                     flex-direction: column;
                     justify-content: center;
-                    align-items: center;
-                    font-weight: 500;
+                    align-items: flex-start;
+                    font-weight: 600;
+                    line-height: 1.15;
                 }
             }
 
             .search-bar {
                 color: variables.$clr-white;
-                border-radius: variables.$border-radius;
-                padding: variables.$size-small;
-                font-weight: bold;
+                border-radius: variables.$border-radius-sm;
+                padding: 0.45rem 0.75rem;
+                font-weight: 400;
                 font-family: inherit;
-                background-color: transparent;
+                font-size: 0.85rem;
+                background-color: rgba(255, 255, 255, 0.06);
                 border: 1px solid variables.$clr-border;
+                transition: all variables.$transition-fast;
+                min-width: 0;
+                flex: 1;
+                max-width: 220px;
+
+                &:focus {
+                    outline: none;
+                    border-color: variables.$clr-accent;
+                    background-color: rgba(255, 255, 255, 0.1);
+                    box-shadow: 0 0 0 3px rgba(10, 132, 255, 0.2);
+                }
+
+                &::placeholder {
+                    color: rgba(255, 255, 255, 0.3);
+                }
             }
         }
 
@@ -75,60 +105,64 @@ html {
             position: sticky;
             top: 0;
             height: 100vh;
-            min-width: 280px;
-            max-width: 280px;
-            border-inline-end: 1px solid #333;
+            min-width: 260px;
+            max-width: 260px;
+            border-inline-end: 1px solid variables.$clr-border;
             display: flex;
             flex-direction: column;
-            padding: 0.8rem;
+            padding: 0.75rem;
             overflow-y: auto;
             overflow-x: hidden;
+            background: variables.$bg-primary;
             @extend .fs-large;
             @extend .with-app-header;
 
-            // Scrollbar styling
             &::-webkit-scrollbar {
-                width: 6px;
+                width: 4px;
             }
-
             &::-webkit-scrollbar-track {
-                background: #1c1c1e;
+                background: transparent;
             }
-
             &::-webkit-scrollbar-thumb {
-                background: #48484a;
-                border-radius: 3px;
+                background: rgba(255, 255, 255, 0.1);
+                border-radius: 2px;
             }
-
             &::-webkit-scrollbar-thumb:hover {
-                background: #636366;
+                background: rgba(255, 255, 255, 0.2);
             }
 
             menu {
                 margin-bottom: 0.5rem;
                 
                 p {
-                    margin: 0 0 0.4rem 0;
-                    font-size: 0.9rem;
+                    margin: 0 0 0.5rem 0;
+                    font-size: 0.7rem;
                     font-weight: 600;
+                    text-transform: uppercase;
+                    letter-spacing: 0.05em;
+                    color: rgba(255, 255, 255, 0.4);
                 }
 
                 label {
-                    margin-bottom: 0.3rem;
-                    font-size: 0.85rem;
+                    margin-bottom: 0.15rem;
+                    font-size: 0.82rem;
+                    font-weight: 400;
                 }
             }
         }
 
         .sidebar-stats {
             margin: 0.5rem 0;
-            padding: 0.6rem;
-            background: rgba(255, 255, 255, 0.03);
-            border-radius: 6px;
+            padding: 0.6rem 0.75rem;
+            background: rgba(255, 255, 255, 0.04);
+            border-radius: variables.$border-radius-sm;
+            border: 1px solid variables.$clr-border;
 
             p {
-                margin: 0.25rem 0;
-                font-size: 0.85rem;
+                margin: 0.2rem 0;
+                font-size: 0.8rem;
+                font-weight: 400;
+                color: rgba(255, 255, 255, 0.65);
             }
         }
 
@@ -138,7 +172,11 @@ html {
 
             p {
                 margin: 0 0 0.3rem 0;
-                font-size: 0.85rem;
+                font-size: 0.7rem;
+                font-weight: 600;
+                text-transform: uppercase;
+                letter-spacing: 0.05em;
+                color: rgba(255, 255, 255, 0.4);
             }
 
             .pagination-controls {
@@ -146,7 +184,22 @@ html {
                 align-items: center;
                 justify-content: center;
                 gap: 0.8rem;
-                font-size: 0.9rem;
+                font-size: 0.85rem;
+
+                a {
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    width: 2rem;
+                    height: 2rem;
+                    border-radius: 50%;
+                    background: rgba(255, 255, 255, 0.06);
+                    transition: background variables.$transition-fast;
+
+                    &:hover {
+                        background: rgba(255, 255, 255, 0.12);
+                    }
+                }
             }
         }
 
@@ -158,91 +211,132 @@ html {
         input[type='checkbox'] {
             height: 1.1rem;
             width: 1.1rem;
+            accent-color: variables.$clr-accent;
+            border-radius: 4px;
+            cursor: pointer;
         }
 
         a {
             color: inherit;
-            text-decoration-color: transparent;
-            transition: text-decoration-color 0.1s;
+            text-decoration: none;
+            transition: color variables.$transition-fast;
             cursor: pointer;
 
             &:hover {
-                text-decoration-color: inherit;
+                color: variables.$clr-accent;
             }
         }
 
         button {
-            border: 1px solid variables.$clr-black;
+            border: none;
             cursor: pointer;
             background-color: variables.$bg-secondary;
-            border-radius: variables.$border-radius;
+            border-radius: variables.$border-radius-sm;
             color: variables.$clr-white;
+            font-family: inherit;
+            transition: all variables.$transition-fast;
             @extend .p-clear;
 
             &.copy-list {
-                font-weight: 300;
-                color: variables.$clr-white;
-                background-color: variables.$clr-black;
-                padding: 5px;
-                border-radius: 5px;
-                @extend .fs-medium;
+                font-weight: 500;
+                color: rgba(255, 255, 255, 0.8);
+                background-color: rgba(255, 255, 255, 0.06);
+                padding: 0.35rem 0.65rem;
+                border-radius: variables.$border-radius-sm;
+                font-size: 0.78rem;
+                border: 1px solid variables.$clr-border;
+
+                &:hover {
+                    background-color: rgba(255, 255, 255, 0.12);
+                    color: variables.$clr-white;
+                }
             }
 
             &.run-scan {
-                background-color: transparent;
+                background: transparent;
                 position: absolute;
                 left: 50%;
                 top: 50%;
                 transform: translate(-50%, -50%);
-                font-size: 2em;
+                font-size: 1.5em;
+                font-weight: 600;
+                letter-spacing: 0.1em;
                 color: variables.$clr-white;
-                border: 1px solid variables.$clr-white;
+                border: 2px solid rgba(255, 255, 255, 0.2);
                 height: 160px;
                 width: 160px;
                 border-radius: 50%;
-            }
+                transition: all variables.$transition-medium;
 
-            &.run-scan:hover {
-                background-color: variables.$bg-secondary;
+                &:hover {
+                    border-color: variables.$clr-accent;
+                    background: rgba(10, 132, 255, 0.08);
+                    box-shadow: 0 0 40px rgba(10, 132, 255, 0.15);
+                    transform: translate(-50%, -50%) scale(1.05);
+                }
+
+                &:active {
+                    transform: translate(-50%, -50%) scale(0.97);
+                }
             }
 
             &.unfollow {
                 width: 100%;
-                background-color: #ff3b30 !important;
-                color: #ffffff !important;
-                border: none !important;
-                border-radius: 10px !important;
-                padding: 0.75rem 1rem !important;
-                font-size: 0.95rem !important;
-                font-weight: 600 !important;
-                letter-spacing: 0.02em !important;
-                transition: background-color 0.15s ease, opacity 0.15s ease !important;
-                margin: 0.8rem 0 0 0 !important;
+                background: variables.$clr-red;
+                color: #ffffff;
+                border: none;
+                border-radius: variables.$border-radius;
+                padding: 0.7rem 1rem;
+                font-size: 0.88rem;
+                font-weight: 600;
+                letter-spacing: -0.01em;
+                transition: all variables.$transition-fast;
+                margin: 0.75rem 0 0 0;
                 flex-shrink: 0;
 
                 &:hover {
-                    background-color: #d70015 !important;
+                    filter: brightness(1.1);
+                    transform: translateY(-1px);
+                    box-shadow: 0 4px 12px rgba(255, 69, 58, 0.3);
                 }
 
                 &:active {
-                    opacity: 0.8;
+                    transform: translateY(0);
+                    filter: brightness(0.9);
                 }
 
                 &:disabled {
-                    opacity: 0.5;
+                    opacity: 0.4;
                     cursor: not-allowed;
+                    transform: none;
+                    box-shadow: none;
                 }
             }
         }
 
         .progressbar {
             width: 100%;
-            height: 8px;
+            height: 3px;
             position: absolute;
-            // Fix: Added explicit positioning to prevent white gap at the end
-            // Without left: 0 and top: 0, the progress bar doesn't fully align
             left: 0;
             top: 0;
+            border: none;
+            appearance: none;
+            -webkit-appearance: none;
+            background: transparent;
+
+            &::-webkit-progress-bar {
+                background: transparent;
+            }
+            &::-webkit-progress-value {
+                background: linear-gradient(90deg, variables.$clr-accent, #5ac8fa);
+                border-radius: 2px;
+                transition: width 0.3s ease;
+            }
+            &::-moz-progress-bar {
+                background: linear-gradient(90deg, variables.$clr-accent, #5ac8fa);
+                border-radius: 2px;
+            }
         }
 
         .results-container,
@@ -253,18 +347,26 @@ html {
 
         .results-container {
             .alphabet-character {
-                border-bottom: 1px solid variables.$bg-secondary;
+                border-bottom: 1px solid variables.$clr-border;
+                color: rgba(255, 255, 255, 0.4);
+                font-weight: 600;
+                letter-spacing: 0.05em;
                 @extend .m-medium;
                 @extend .p-medium;
                 @extend .fs-xlarge;
             }
 
             .result-item {
-                border-radius: 3px;
+                border-radius: variables.$border-radius-sm;
                 cursor: pointer;
+                transition: background variables.$transition-fast;
                 @extend .flex;
                 @extend .align-center;
                 @extend .p-medium;
+
+                &:hover {
+                    background: rgba(255, 255, 255, 0.04);
+                }
 
                 .avatar-container {
                     @extend .pos-relative;
@@ -282,6 +384,8 @@ html {
                     .avatar {
                         width: 75px;
                         border-radius: 50%;
+                        border: 2px solid variables.$clr-border;
+                        transition: filter variables.$transition-fast;
                     }
 
                     .avatar-icon-overlay-container {
@@ -294,7 +398,7 @@ html {
                 }
 
                 .verified-badge {
-                    background-color: #49adf4;
+                    background-color: variables.$clr-accent;
                     border-radius: 50%;
                     padding: 0.2rem 0.3rem;
                     font-size: 0.45em;
@@ -303,10 +407,11 @@ html {
                 }
 
                 .private-indicator {
-                    border: 2px solid #51bb42;
+                    border: 2px solid variables.$clr-green;
                     border-radius: 25px;
-                    color: #51bb42;
+                    color: variables.$clr-green;
                     font-weight: 500;
+                    font-size: 0.75rem;
                     @extend .p-small;
                 }
             }
@@ -321,24 +426,33 @@ html {
             @extend .p-large;
 
             .tab {
-                color: variables.$clr-gray;
-                border-radius: 8px;
+                color: rgba(255, 255, 255, 0.4);
+                border-radius: variables.$border-radius-sm;
                 cursor: pointer;
+                font-weight: 500;
+                transition: all variables.$transition-fast;
                 @extend .grow;
                 @extend .fs-xlarge;
                 @extend .t-center;
                 @extend .p-small;
 
+                &:hover {
+                    color: rgba(255, 255, 255, 0.6);
+                    background: rgba(255, 255, 255, 0.04);
+                }
+
                 &-active {
-                    color: inherit;
-                    background-color: variables.$bg-secondary;
+                    color: variables.$clr-white;
+                    background-color: rgba(255, 255, 255, 0.08);
                 }
             }
         }
 
         .badge {
-            background: variables.$bg-secondary;
-            border-radius: 15px;
+            background: rgba(255, 255, 255, 0.08);
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 500;
             @extend .p-medium;
         }
     }
@@ -352,30 +466,40 @@ html {
     align-items: start;
     width: 100%;
     max-width: 360px;
-    padding: 0.8em;
+    padding: 0.85em;
     gap: 0.5em;
     bottom: variables.$size-medium;
     right: variables.$size-medium;
-    color: variables.$clr-black;
-    background-color: variables.$clr-white;
-    font-size: 1.25em;
-    border-radius: 6px;
+    color: variables.$clr-white;
+    background-color: variables.$bg-elevated;
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    font-size: 0.9rem;
+    font-weight: 500;
+    border-radius: variables.$border-radius;
+    border: 1px solid variables.$clr-border;
     z-index: 2;
-    box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.2);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
     animation: slide-out 0.5s ease-in-out;
 
     >.toast {
         &__message {
             display: flex;
             margin: 0;
+            line-height: 1.4;
         }
 
         &__close-button {
             background: none;
             border: none;
-            color: inherit;
+            color: rgba(255, 255, 255, 0.6);
             cursor: pointer;
             font-size: 1em;
+            transition: color variables.$transition-fast;
+
+            &:hover {
+                color: variables.$clr-white;
+            }
         }
     }
 
@@ -386,23 +510,24 @@ html {
     }
 
     &.success {
-        background-color: variables.$clr-green;
-        color: variables.$clr-white;
+        background-color: rgba(48, 209, 88, 0.9);
+        border-color: rgba(48, 209, 88, 0.3);
     }
 
     &.error {
-        background-color: variables.$clr-red;
-        color: variables.$clr-white;
+        background-color: rgba(255, 69, 58, 0.9);
+        border-color: rgba(255, 69, 58, 0.3);
     }
 
     &.info {
-        background-color: #2196f3;
-        color: variables.$clr-white;
+        background-color: rgba(10, 132, 255, 0.9);
+        border-color: rgba(10, 132, 255, 0.3);
     }
 
     &.warning {
-        background-color: #fdd835;
+        background-color: rgba(255, 214, 10, 0.9);
         color: variables.$clr-black;
+        border-color: rgba(255, 214, 10, 0.3);
     }
 }
 
@@ -415,23 +540,35 @@ html {
     @extend .fs-large;
 
     .button-control {
-        background-color: #48484a;
-        border-radius: 8px;
+        background-color: rgba(255, 255, 255, 0.08);
+        border-radius: variables.$border-radius-sm;
         padding: 0.5rem 0.8rem;
         color: variables.$clr-white;
         cursor: pointer;
-        border: none;
+        border: 1px solid variables.$clr-border;
         font-size: 0.85rem;
         font-weight: 500;
-        transition: background-color 0.15s ease;
+        font-family: inherit;
+        transition: all variables.$transition-fast;
 
         &:hover {
-            background-color: #636366;
+            background-color: rgba(255, 255, 255, 0.14);
+            border-color: rgba(255, 255, 255, 0.15);
         }
     }
 
     .button-pause {
         width: 100%;
+    }
+
+    .button-cancel {
+        width: 100%;
+        background-color: variables.$clr-red;
+        border-color: transparent;
+
+        &:hover {
+            background-color: color.adjust(variables.$clr-red, $lightness: -10%);
+        }
     }
 }
 
@@ -447,25 +584,25 @@ html {
         align-items: center;
         margin-bottom: 1rem;
         padding: 1rem;
-        background-color: rgba(255, 255, 255, 0.06);
-        border-radius: 10px;
-        border: 1px solid rgba(255, 255, 255, 0.08);
+        background-color: rgba(255, 255, 255, 0.04);
+        border-radius: variables.$border-radius;
+        border: 1px solid variables.$clr-border;
 
         h4 {
             margin: 0;
-            font-size: 1.15rem;
+            font-size: 1.1rem;
             color: variables.$clr-white;
             font-weight: 600;
             letter-spacing: -0.02em;
         }
 
         .whitelist-count {
-            background-color: #48484a;
+            background-color: rgba(255, 255, 255, 0.08);
             padding: 0.35rem 0.9rem;
-            border-radius: 16px;
-            font-size: 0.85rem;
+            border-radius: 20px;
+            font-size: 0.82rem;
             font-weight: 500;
-            color: variables.$clr-white;
+            color: rgba(255, 255, 255, 0.7);
             letter-spacing: -0.01em;
         }
     }
@@ -473,22 +610,22 @@ html {
     .whitelist-message {
         padding: 0.85rem 1rem;
         margin-bottom: 1rem;
-        border-radius: 8px;
-        font-size: 0.88rem;
+        border-radius: variables.$border-radius-sm;
+        font-size: 0.85rem;
         font-weight: 400;
         letter-spacing: -0.01em;
         line-height: 1.4;
 
         &.success {
-            background-color: rgba(52, 199, 89, 0.15);
-            border: 1px solid rgba(52, 199, 89, 0.3);
-            color: #a5d6a7;
+            background-color: rgba(48, 209, 88, 0.1);
+            border: 1px solid rgba(48, 209, 88, 0.2);
+            color: variables.$clr-green;
         }
 
         &.error {
-            background-color: rgba(255, 59, 48, 0.15);
-            border: 1px solid rgba(255, 59, 48, 0.3);
-            color: #ef9a9a;
+            background-color: rgba(255, 69, 58, 0.1);
+            border: 1px solid rgba(255, 69, 58, 0.2);
+            color: variables.$clr-red;
         }
     }
 
@@ -500,11 +637,11 @@ html {
         .btn {
             padding: 0.7rem 1rem;
             border: none;
-            border-radius: 8px;
-            font-size: 0.9rem;
+            border-radius: variables.$border-radius-sm;
+            font-size: 0.88rem;
             font-weight: 500;
             cursor: pointer;
-            transition: background-color 0.15s ease, opacity 0.15s ease;
+            transition: all variables.$transition-fast;
             font-family: inherit;
             letter-spacing: -0.01em;
 
@@ -514,38 +651,39 @@ html {
             }
 
             &:not(:disabled):hover {
-                opacity: 0.9;
+                transform: translateY(-1px);
+                box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
             }
 
             &:not(:disabled):active {
-                opacity: 0.7;
+                transform: translateY(0);
             }
         }
 
         .btn-export {
-            background: #007aff;
+            background: variables.$clr-accent;
             color: #ffffff;
 
             &:hover {
-                background: #0051d5;
+                filter: brightness(1.1);
             }
         }
 
         .btn-import {
-            background: #34c759;
+            background: variables.$clr-green;
             color: #ffffff;
 
             &:hover {
-                background: #248a3d;
+                filter: brightness(1.1);
             }
         }
 
         .btn-clear {
-            background: #ff3b30;
+            background: variables.$clr-red;
             color: #ffffff;
 
             &:hover {
-                background: #d70015;
+                filter: brightness(1.1);
             }
         }
 
@@ -559,7 +697,7 @@ html {
                 gap: 1.2rem;
                 padding: 0.6rem 0.8rem;
                 background-color: rgba(0, 0, 0, 0.25);
-                border-radius: 8px;
+                border-radius: variables.$border-radius-sm;
                 flex-wrap: wrap;
 
                 label {
@@ -576,7 +714,7 @@ html {
                         width: auto;
                         height: auto;
                         cursor: pointer;
-                        accent-color: #007aff;
+                        accent-color: variables.$clr-accent;
                     }
                 }
             }
@@ -586,20 +724,20 @@ html {
     .whitelist-info {
         margin-top: 1rem;
         padding: 0.85rem 1rem;
-        background-color: rgba(0, 122, 255, 0.08);
-        border: 1px solid rgba(0, 122, 255, 0.2);
-        border-radius: 8px;
+        background-color: rgba(10, 132, 255, 0.06);
+        border: 1px solid rgba(10, 132, 255, 0.15);
+        border-radius: variables.$border-radius-sm;
 
         .info-text {
             margin: 0;
             font-size: 0.84rem;
             line-height: 1.5;
-            color: #90caf9;
+            color: rgba(255, 255, 255, 0.6);
             font-weight: 400;
             letter-spacing: -0.01em;
 
             strong {
-                color: #64b5f6;
+                color: variables.$clr-accent;
                 font-weight: 500;
             }
         }
@@ -693,7 +831,7 @@ html {
     font-weight: 500;
 
     .whitelist-badge {
-        color: #ffd700;
+        color: #ffd60a;
         font-size: 1.2rem;
     }
 }
@@ -701,7 +839,7 @@ html {
 @keyframes slide-in {
     from {
         opacity: 0;
-        transform: translateY(-10px);
+        transform: translateY(10px);
     }
     to {
         opacity: 1;
@@ -755,9 +893,9 @@ html {
     }
 
     .iu button.unfollow {
-        font-size: 0.9rem !important;
-        padding: 0.7rem 0.9rem !important;
-        margin: 0.7rem 0 0 0 !important;
+        font-size: 0.85rem;
+        padding: 0.65rem 0.9rem;
+        margin: 0.65rem 0 0 0;
     }
 
     .controls .button-control {
@@ -811,9 +949,9 @@ html {
     }
 
     .iu button.unfollow {
-        font-size: 0.85rem !important;
-        padding: 0.65rem 0.85rem !important;
-        margin: 0.6rem 0 0 0 !important;
+        font-size: 0.82rem;
+        padding: 0.6rem 0.85rem;
+        margin: 0.55rem 0 0 0;
     }
 
     .controls .button-control {
@@ -868,10 +1006,10 @@ html {
     }
 
     .iu button.unfollow {
-        font-size: 0.8rem !important;
-        padding: 0.6rem 0.75rem !important;
-        border-radius: 8px !important;
-        margin: 0.5rem 0 0 0 !important;
+        font-size: 0.78rem;
+        padding: 0.55rem 0.75rem;
+        border-radius: variables.$border-radius-sm;
+        margin: 0.45rem 0 0 0;
     }
 
     .controls {
@@ -930,11 +1068,11 @@ html {
     }
 
     .iu button.unfollow {
-        font-size: 0.75rem !important;
-        padding: 0.55rem 0.7rem !important;
-        border-radius: 7px !important;
-        font-weight: 500 !important;
-        margin: 0.4rem 0 0 0 !important;
+        font-size: 0.72rem;
+        padding: 0.5rem 0.7rem;
+        border-radius: 7px;
+        font-weight: 500;
+        margin: 0.35rem 0 0 0;
     }
 
     .controls {

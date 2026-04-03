@@ -23,6 +23,7 @@ type UnfollowingState = {
   readonly selectedResults: readonly UserNode[];
   readonly unfollowLog: readonly UnfollowLogEntry[];
   readonly filter: UnfollowFilter;
+  readonly cancelled: boolean;
 };
 
 //TODO THIS TYPE OF MULTIPLE STATE NEEDS TO BE SEPARETED IN DIFFERENT FILES ASAP (Global state,unfollowing state, scanning state etc...)
