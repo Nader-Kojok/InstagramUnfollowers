@@ -160,8 +160,10 @@ function App() {
       isActiveProcess = false;
       break;
     case "scanning":
-    case "unfollowing":
       isActiveProcess = state.percentage < 100;
+      break;
+    case "unfollowing":
+      isActiveProcess = state.percentage < 100 && !state.cancelled;
       break;
     default:
       assertUnreachable(state);
@@ -309,6 +311,31 @@ function App() {
   const onResetToInitial = () => {
     clearScanResults();
     setState({ status: "initial" });
+  };
+
+  const goBackToScanResults = () => {
+    const cachedResults = loadScanResults();
+    if (cachedResults && cachedResults.length > 0) {
+      setState({
+        status: "scanning",
+        page: 1,
+        searchTerm: "",
+        currentTab: "non_whitelisted",
+        percentage: 100,
+        results: cachedResults,
+        selectedResults: [],
+        whitelistedResults: loadWhitelist(),
+        filter: {
+          showNonFollowers: true,
+          showFollowers: false,
+          showVerified: true,
+          showPrivate: true,
+          showWithOutProfilePicture: true,
+        },
+      });
+    } else {
+      onResetToInitial();
+    }
   };
 
   useEffect(() => {
@@ -587,6 +614,7 @@ function App() {
         state={state}
         handleUnfollowFilter={handleUnfollowFilter}
         cancelUnfollow={cancelUnfollow}
+        goBackToScanResults={goBackToScanResults}
       ></Unfollowing>;
       break;
 

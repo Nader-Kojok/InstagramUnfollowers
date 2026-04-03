@@ -6,6 +6,7 @@ interface UnfollowingProps {
   state: State;
   handleUnfollowFilter: (e: React.ChangeEvent<HTMLInputElement>) => void;
   cancelUnfollow: () => void;
+  goBackToScanResults: () => void;
 }
 
 export const Unfollowing = (
@@ -13,6 +14,7 @@ export const Unfollowing = (
     state,
     handleUnfollowFilter,
     cancelUnfollow,
+    goBackToScanResults,
   }: UnfollowingProps) => {
 
   if (state.status !== "unfollowing") {
@@ -50,6 +52,16 @@ export const Unfollowing = (
               onClick={cancelUnfollow}
             >
               Cancel
+            </button>
+          </div>
+        )}
+        {(state.cancelled || state.percentage >= 100) && (
+          <div className="controls">
+            <button
+              className="button-control"
+              onClick={goBackToScanResults}
+            >
+              Back to Results
             </button>
           </div>
         )}
